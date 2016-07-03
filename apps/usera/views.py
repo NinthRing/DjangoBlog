@@ -11,11 +11,12 @@ from django.utils import timezone
 
 from apps.usera.models import CommunityUser
 from .forms import SignInForm, SignUpForm, ResetPasswordForm
-#from itsdangerous import URLSafeSerializer as utsr
-#from config.settings import SECRET_KEY as security_key
+# from itsdangerous import URLSafeSerializer as utsr
+# from config.settings import SECRET_KEY as security_key
 import base64
 
-#security_key = 'DjangoBlog'
+
+# security_key = 'DjangoBlog'
 
 class SignInView(FormView):
     template_name = 'usera/signin.html'
@@ -42,6 +43,7 @@ class SignInView(FormView):
         if redirect_to != 'None':
             return redirect_to
         return '/'
+
 
 # 更安全的加密方法，还没完全弄懂
 # create token used in activate link
@@ -79,7 +81,8 @@ def active_mail(username, email):
     sender = 'upczww@163.com'  # 设置发件邮箱，一定要自己注册的邮箱
     pwd = '*******'  # 设置发件邮箱的密码，等会登陆会用到
     receiver = email  # 设置邮件接收人
-    body = '<h1>Django中国社区用户激活</h1><p>请点击以下链接激活用户</p>'+'http://127.0.0.1:8000/usera/activate/'+token.decode(encoding='UTF-8')# 设置邮件正文，这里是支持HTML的
+    body = '<h1>Django中国社区用户激活</h1><p>请点击以下链接激活用户</p>' + 'http://127.0.0.1:8000/usera/activate/' + token.decode(
+            encoding='UTF-8')  # 设置邮件正文，这里是支持HTML的
 
     msg = MIMEText(body, 'html')  # 设置正文为符合邮件格式的HTML内容
     msg['subject'] = 'Django中国社区密码重置'  # 设置邮件标题
