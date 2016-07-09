@@ -4,6 +4,7 @@ from django.views.generic.edit import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import PostForm
 from .models import Post
+from apps.follow.models import Follow
 import markdown2
 
 
@@ -44,3 +45,20 @@ class PostDetailView(DetailView):
         obj = super(PostDetailView, self).get_object()
         obj.body = markdown2.markdown(obj.body, extras=['fenced-code-blocks'], )
         return obj
+
+
+class UserFollowsListView(ListView):
+    model = Post
+    template_name = 'community/index.html'
+    context_object_name = 'post_list'
+
+    def get_queryset(self):
+        print(self.request.user)
+        # follow_list = Follow.objects.filter(trigger_user=self.request.user)
+        follow_list = self.request.user.followed_objects.all()
+        print(follow_list)
+        object_list = []
+        for follow in follow_list:
+            object_list.append(follow.content_object)
+            print(follow.content_object)
+        return object_list
