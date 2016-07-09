@@ -16,4 +16,5 @@ class PostForm(ModelForm):
         post = super(PostForm, self).save(commit=False)
         post.author = self.user
         post.save()
+        self.save_m2m()
         return post

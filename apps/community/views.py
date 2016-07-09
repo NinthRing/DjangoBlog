@@ -3,8 +3,9 @@ from django.core.urlresolvers import reverse
 from django.views.generic.edit import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import PostForm
-from .models import Post
+from .models import Post, Tag
 from apps.follow.models import Follow
+from django.shortcuts import get_object_or_404
 import markdown2
 
 
@@ -62,3 +63,17 @@ class UserFollowsListView(ListView):
             object_list.append(follow.content_object)
             print(follow.content_object)
         return object_list
+
+
+class TagsListView(ListView):
+    model = Tag
+    template_name = 'community/tags.html'
+
+
+class TagPostListView(ListView):
+    template_name = 'community/index.html'
+    context_object_name = 'post_list'
+
+    def get_queryset(self):
+        tag = get_object_or_404(Tag, pk=self.kwargs.get('tag_id'))
+        return tag.post_set.all()

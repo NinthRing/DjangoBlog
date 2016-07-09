@@ -1,0 +1,12 @@
+{% extends 'community_base.html' %}
+{% load staticfiles %}
+{% block content %}
+    <div class="container">
+        <h3><strong>全部标签：</strong></h3>
+        <ul class="list-group">
+            {% for tag in tag_list %}
+                <li class="list-group-item"><a href="{% url 'community:tag_post' tag.pk %}">{{ tag.name }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}
