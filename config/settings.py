@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'pagination_bootstrap',
+    'bootstrap3',
     'apps.blog',
     'apps.usera',
     'apps.community',
@@ -73,7 +74,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 "django.core.context_processors.media",  # for pagination
-                "apps.community.context_processors.tags", # for tags
+                "apps.community.context_processors.tags",  # for tags
                 # 'apps.blog.context_processors.recent_blog_list',
             ],
         },
