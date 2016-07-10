@@ -55,7 +55,8 @@
                                 <time>
                                 {{ post|last_comment_timesince }}前
                             {% else %}
-                                <i class="fa fa-fw fa-reply "></i><strong>{{ post.author }}</strong> · 发布于
+                                <i class="fa fa-fw fa-reply "></i>
+                                <strong>{{ post.author.profile.nickname }}</strong> · 发布于
                                 &nbsp;
                                 <time>
                                 {{ post.created|timesince }}前

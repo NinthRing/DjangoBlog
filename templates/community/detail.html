@@ -24,7 +24,7 @@
                     </div>
                     <div class="col-sm-10 clearfix d-list-center">
                         <h3 class="dj-list-dinfo">
-                            <a href=""><strong>{{ post.author }}</strong></a> · 发布于&nbsp;
+                            <a href=""><strong>{{ post.author.profile.nickname }}</strong></a> · 发布于&nbsp;
                             <time>{{ post.created|timesince }}前</time>
                             <!-- <i class="fa fa-fw fa-pencil-square-o"></i><strong>作者</strong> · 发布于&nbsp;<time>3分钟前</time> -->
                         </h3>
@@ -45,7 +45,7 @@
                                 {% who_likes post as post_like_list %}
                                 <i class="icon fa fa-fw fa-thumbs-o-up "></i>
                                 {% for like in post_like_list %}
-                                    <a href=""><strong>{{ like.trigger_user.username }}</strong></a>,
+                                    <a href=""><strong>{{ like.trigger_user.profile.nickname }}</strong></a>,
                                 {% endfor %}{% if post_like_list %}等人赞了它{% endif %}
                             </div>
                         </div>
@@ -65,7 +65,7 @@
                         </div>
                         <div class="col-sm-10 clearfix d-list-center">
                             <h3 class="dj-list-dinfo">
-                                <a href=""><strong>{{ comment.author.username }}</strong></a> · 发布于&nbsp;
+                                <a href=""><strong>{{ comment.author.profile.nickname }}</strong></a> · 发布于&nbsp;
                                 <time>{{ comment.created_time|timesince }}前</time>
                                 <!-- <i class="fa fa-fw fa-pencil-square-o"></i><strong>作者</strong> · 发布于&nbsp;<time>3分钟前</time> -->
                             </h3>
@@ -86,7 +86,7 @@
                                     {% who_likes comment as comment_like_list %}
                                     <i class="icon fa fa-fw fa-thumbs-o-up "></i>
                                     {% for like in comment_like_list %}
-                                        <a href=""><strong>{{ like.trigger_user.username }}</strong></a>,
+                                        <a href=""><strong>{{ like.trigger_user.profile.nickname }}</strong></a>,
                                     {% endfor %}{% if comment_like_list %}等人赞了它{% endif %}
                                 </div>
 

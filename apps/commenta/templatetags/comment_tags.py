@@ -40,7 +40,7 @@ def last_comment_by(obj):
         return Comment.objects.filter(
                 object_id=obj.pk,
                 content_type=ContentType.objects.get_for_model(obj)
-        ).order_by('-modified_time').first().author.username
+        ).order_by('-modified_time').first().author.profile.nickname
     except AttributeError:
         return ''
 
