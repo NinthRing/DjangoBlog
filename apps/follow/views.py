@@ -58,7 +58,6 @@ class FollowToggleView(FollowLoginRequiredMixin, View):
                 print(obj.author, self.request.user)
                 follow.delete()
                 print('88888')
-            print('------------')
         return HttpResponseRedirect(request.META.get("HTTP_REFERER", "/"))
 
     def get_login_url(self):

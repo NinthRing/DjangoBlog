@@ -25,22 +25,12 @@
                 </div>
 
                 <div class="list-group">
-                    <a href="#" class="list-group-item list-group-item-success">
-                        <i class="fa fa-square fa-fw"></i>
-                        标签1
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-success">
-                        <i class="fa fa-square fa-fw"></i>
-                        标签2
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-success">
-                        <i class="fa fa-square fa-fw"></i>
-                        标签3
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-success">
-                        <i class="fa fa-square fa-fw"></i>
-                        标签4
-                    </a>
+                    {% for tag in tag_list %}
+                        <a href="{% url 'community:tag_post' tag.pk %}" class="list-group-item list-group-item-success">
+                            <i class="fa fa-square fa-fw"></i>
+                            {{ tag.name }}
+                        </a>
+                    {% endfor %}
                     <a href="{% url 'community:tag' %}" class="list-group-item list-group-item-warning">更多...</a>
                 </div>
             </div>

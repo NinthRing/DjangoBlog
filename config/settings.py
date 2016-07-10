@@ -73,6 +73,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 "django.core.context_processors.media",  # for pagination
+                "apps.community.context_processors.tags", # for tags
                 # 'apps.blog.context_processors.recent_blog_list',
             ],
         },
