@@ -1,0 +1,90 @@
+{% extends 'community_base.html' %}
+{% block content %}
+    <div class="jumbotron">
+        <div class="container">
+            <div class="dj-list row">
+                <div class="col-sm-2 dj-list-left clearfix">
+                    <a href="#" class="pull-left">
+                        <img src="http://tse1.mm.bing.net/th?&id=OIP.M091341998a63eca930a82bbdb0101f0eo0&w=165&h=165&c=0&pid=1.9&rs=0&p=0"
+                             alt="" class="dj-list-lavatar">
+                    </a>
+                </div>
+                <div class="col-sm-10 clearfix dj-list-left">
+                    <h3>{{ profile.nickname }}</h3>
+                    {% if profile.self_intro %}
+                        {{ profile.self_intro }}
+                    {% else %}
+                        <small>写点什么介绍一下自己吧</small>
+                    {% endif %}
+                    <hr>
+                    <small>
+                        <i class="fa fa-circle fa-fw"></i>在线
+                    </small>
+                    <span style="margin-left: 20px;">加入于{{ user.date_joined }}</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-2">
+                <div class="list-group">
+                    <a href="{% url 'community:profile' %}"><i class="fa fa-fw fa-comments-o"></i>话题</a>
+                </div>
+                <div class="list-group">
+                    <a href="#"><i class="fa fa-fw fa-pencil-square-o"></i>回复</a>
+                </div>
+                <hr>
+                <div class="list-group">
+                    <a href="#"><i class="fa fa-fw fa-th-large"></i>个人设置</a>
+                </div>
+            </div>
+            <div class="col-sm-9">
+                <div class="list-group">
+                    {% load comment_tags %}
+                    {% load pagination_tags %}
+                    {% autopaginate post_list 20 %}
+                    {% for post in post_list %}
+                        <div class="dj-list row">
+                            <div class="col-sm-1 dj-list-left clearfix">
+                                <a href="#" class="pull-left">
+                                    <!-- <img class="dj-avatar" src="" alt="头像"> -->
+                                    <span class="dj-list-avatar">A</span>
+                                </a>
+                            </div>
+                            <a class="col-sm-10 clearfix dj-list-center" href="{% url 'community:detail' post.pk %}">
+                                <h4 class="dj-list-title">{{ post.title }}</h4>
+                        <span class="dj-list-info">
+                            {% if  post|last_comment_by %}
+                                <i class="fa fa-fw fa-reply "></i><strong>{{ post|last_comment_by }}</strong> · 回复于
+                                &nbsp;
+                                <time>
+                                {{ post|last_comment_timesince }}前
+                            {% else %}
+                                <i class="fa fa-fw fa-reply "></i>
+                                <strong>{{ post.author.profile.nickname }}</strong> · 发布于
+                                &nbsp;
+                                <time>
+                                {{ post.created|timesince }}前
+                            {% endif %}
+                            </time>
+                            <!-- <i class="fa fa-fw fa-pencil-square-o"></i><strong>作者</strong> · 发布于&nbsp;<time>3分钟前</time> -->
+                        </span>
+                                <div class="btn-group btn-group-xs pull-right dj-list-tags" role="group">
+                                    {% for tag in post.tags.all %}
+                                        <span class="{% cycle "btn btn-info" "btn btn-warning" "btn btn-success" %}">{{ tag.name }}</span>
+                                    {% endfor %}
+                                </div>
+                            </a>
+                            <div class="media-middle col-sm-1 dj-list-right">
+                                <span><i class="fa fa-fw fa-comment-o"></i>{% comment_count post %}</span>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

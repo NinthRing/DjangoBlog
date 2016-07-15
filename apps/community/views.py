@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import PostForm
 from .models import Post, Tag
 from apps.follow.models import Follow
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 import markdown2
 
 
@@ -77,3 +77,8 @@ class TagPostListView(ListView):
     def get_queryset(self):
         tag = get_object_or_404(Tag, pk=self.kwargs.get('tag_id'))
         return tag.post_set.all()
+
+
+def profile(request):
+    return render(request, 'community/profile.html',
+                  {'profile': request.user.profile, 'post_list': request.user.post_set.all()})
