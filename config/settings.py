@@ -129,6 +129,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'), ]
+STATIC_ROOT = '/static/'
+
+MEDIA_ROOT = '/static'
+MEDIA_URL = '/'  # 设置此为空，因为文件没有上传在 media 里
 
 AUTH_USER_MODEL = 'usera.CommunityUser'
 

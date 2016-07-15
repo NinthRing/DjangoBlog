@@ -7,6 +7,7 @@ from .models import Post, Tag
 from apps.follow.models import Follow
 from django.shortcuts import get_object_or_404, render
 import markdown2
+from apps.usera.models import CommunityUser
 
 
 class PostCreateView(LoginRequiredMixin, CreateView):
@@ -82,3 +83,9 @@ class TagPostListView(ListView):
 def profile(request):
     return render(request, 'community/profile.html',
                   {'profile': request.user.profile, 'post_list': request.user.post_set.all()})
+
+
+def test(request):
+    user_instance = CommunityUser.objects.get(username='yangxueguang123456')
+    print(user_instance.profile.mugshot.url)
+    return render(request, 'test.html', {'user_instance': user_instance})

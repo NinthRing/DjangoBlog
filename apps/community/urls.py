@@ -10,4 +10,7 @@ urlpatterns = [
     url(r'^tags/$', views.TagsListView.as_view(), name='tag'),
     url(r'^tag/(?P<tag_id>\d+)/$', views.TagPostListView.as_view(), name='tag_post'),
     url(r'^profile/$', views.profile, name='profile'),
+
+    # just for test mugshot
+    url(r'^test/$', views.test, name='test'),
 ]

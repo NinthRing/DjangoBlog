@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 from django.db.models.signals import post_save
-from .utils import default_nickname
+from .utils import default_nickname, default_mugshot
 
 
 class CommunityUser(AbstractUser):
@@ -23,7 +23,7 @@ class UserProfile(models.Model):
     )
     user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name='profile')
     nickname = models.CharField('昵称', max_length=50, blank=True)
-    mugshot = models.ImageField('头像', upload_to='/uploads', blank=True)  # 不要给CharField相关的属性设置null=True
+    mugshot = models.ImageField('头像', upload_to='static/mugshots/', blank=True)  # 不要给CharField相关的属性设置null=True
     gender = models.CharField('性别', max_length=1, choices=GENDER_CHOICES, blank=True)
     birthday = models.DateField('生日', blank=True, null=True)
     self_intro = models.TextField('个人简介', blank=True)
@@ -52,8 +52,9 @@ def create_profile(sender, **kwargs):
     if created:
         # 生成默认昵称
         nickname = default_nickname(user_instance)
+        mugshot = default_mugshot(user_instance)
         # 生成默认头像
-        UserProfile.objects.create(user=user_instance, nickname=nickname)
+        UserProfile.objects.create(user=user_instance, nickname=nickname, mugshot=mugshot)
 
 
 # 必须指定发送者，否则任何一个model save时都会调用该方法
