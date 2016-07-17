@@ -8,7 +8,9 @@
     </a>
     <div class="list-group">
         {% for notification in all_notification_list %}
-            <a href="#" class="list-group-item">{{ notification.description }}</a>
+            <div>
+                {{ notification.description |safe }}
+            </div>
             {% if notification.unread %}
                 <a href="{% url 'notifications:mark_read' notification.pk %}">
                     <button class="btn btn-default">标为已读</button>

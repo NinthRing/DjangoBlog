@@ -46,8 +46,8 @@ class FollowToggleView(FollowLoginRequiredMixin, View):
         follow, followed = Follow.objects.follow_toggle(request.user, content_type, obj.id)
         if followed:
             if obj.author != self.request.user:  # 用于关注人点赞人是否是作者，不够通用！因为obj的author命名可能不同
-                description = '用户 {user} 关注了你的帖子 {post}' \
-                    .format(user=self.request.user.username, post=obj.title)
+                description = '用户 <a href="">{user}</a> 关注了你的帖子 <a href="{post_url}">{post}</a>' \
+                    .format(user=self.request.user.username, post=obj.title, post_url=obj.get_absolute_url())
                 notify.send(self.request.user, recipient=obj.author,
                             actor=self.request.user,
                             verb='关注',

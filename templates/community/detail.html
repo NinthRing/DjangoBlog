@@ -69,7 +69,7 @@
                                 <time>{{ comment.created_time|timesince }}前</time>
                                 <!-- <i class="fa fa-fw fa-pencil-square-o"></i><strong>作者</strong> · 发布于&nbsp;<time>3分钟前</time> -->
                             </h3>
-                            <div class="d-content">
+                            <div class="d-content" id="comment-{{ comment.pk }}-body">
                                 <!-- 这里是具体内容 -->
                                 {{ comment.body }}
                                 <!-- end 这里是具体内容-->

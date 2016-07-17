@@ -16,6 +16,7 @@ from .forms import CommentForm
 from .models import Comment
 from django.shortcuts import redirect
 from .utils import parse_username
+from django.utils.safestring import mark_safe
 
 
 # Create your views here.
@@ -79,8 +80,13 @@ class CommentCreateView(CommentLoginRequiredMixin, CreateView):
         print(user)
         if user is not None:
             # 有@ ，给被@的人发送通知
-            reminder_description = '用户 {user} 在帖子 {post} 中@了你：{comment}' \
+            reminder_description = '用户 <a href="">{user}</a> 在帖子 <a href="{post_url}">{post}</a> 中@了你：' \
+                                   '<a href="{comment_url}">{comment}<a/>' \
                 .format(user=self.request.user.profile.nickname, post=self.content_object.title,
+                        post_url=self.content_object.get_absolute_url(),
+                        comment_url='#'.join(
+                                [self.content_object.get_absolute_url(),
+                                 'comment-' + str(self.object.pk) + '-body']),
                         comment=form.instance.body[:50])
             # 发送@通知
             notify.send(self.request.user, recipient=user,
@@ -90,9 +96,15 @@ class CommentCreateView(CommentLoginRequiredMixin, CreateView):
                         action_object=self.content_object)
         if self.content_object.author != self.request.user:  # 用于判断回复人是否是作者，不够通用！因为obj的author命名可能不同
             # 发送正常的回复通知
-            description = '用户 {user} 在你发表的帖子 {post} 中回复了你：{comment}' \
-                .format(user=self.request.user.username, post=self.content_object.title,
-                        comment=form.instance.body[:50])
+            description = mark_safe('用户 <a href="">{user}</a> 在你发表的帖子 <a href="{post_url}">{post}</a> 中回复了你：' \
+                                    '<a href="{comment_url}">{comment}<a/>' \
+                                    .format(user=self.request.user.username,
+                                            post_url=self.content_object.get_absolute_url(),
+                                            post=self.content_object.title,
+                                            comment_url='#'.join(
+                                                    [self.content_object.get_absolute_url(),
+                                                     'comment-' + str(self.object.pk) + '-body']),
+                                            comment=form.instance.body[:50]))
             notify.send(self.request.user, recipient=self.content_object.author,
                         actor=self.request.user,
                         verb='回复',

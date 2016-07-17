@@ -52,8 +52,8 @@ class LikeToggleView(LikesLoginRequiredMixin, View):
             if obj.author != self.request.user:  # 用于判断点赞人是否是作者，不够通用！因为obj的author命名可能不同
                 description = ''
                 if isinstance(obj, Post):
-                    description = '用户 {user} 赞了你的帖子 {post}' \
-                        .format(user=self.request.user.username, post=obj.title[:30])
+                    description = '用户 <a href="">{user}</a> 赞了你的帖子 <a href="{post_url}">{post}</a>' \
+                        .format(user=self.request.user.username, post=obj.title[:30], post_url=obj.get_absolute_url())
                 if isinstance(obj, Comment):
                     description = '用户 {user} 赞了你的回复 {comment}' \
                         .format(user=self.request.user.username, comment=obj.body[:30])
