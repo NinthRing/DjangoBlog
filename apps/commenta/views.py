@@ -15,6 +15,7 @@ from django.contrib.auth.views import redirect_to_login
 from .forms import CommentForm
 from .models import Comment
 from django.shortcuts import redirect
+from .utils import parse_username
 
 
 # Create your views here.
@@ -74,10 +75,24 @@ class CommentCreateView(CommentLoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         self.object = form.save()
-        description = '用户 {user} 在你发表的帖子 {post} 中回复了你：{comment}' \
-            .format(user=self.request.user.username, post=self.content_object.title, comment=form.instance.body[:50])
-        if self.content_object.author != self.request.user:  # 用于判断点赞人是否是作者，不够通用！因为obj的author命名可能不同
-            print(self.content_object.author, self.content_object.author)
+        user = parse_username(self.object.body)  # 解析是否有@
+        print(user)
+        if user is not None:
+            # 有@ ，给被@的人发送通知
+            reminder_description = '用户 {user} 在帖子 {post} 中@了你：{comment}' \
+                .format(user=self.request.user.profile.nickname, post=self.content_object.title,
+                        comment=form.instance.body[:50])
+            # 发送@通知
+            notify.send(self.request.user, recipient=user,
+                        actor=self.request.user,
+                        verb='@',
+                        description=reminder_description,
+                        action_object=self.content_object)
+        if self.content_object.author != self.request.user:  # 用于判断回复人是否是作者，不够通用！因为obj的author命名可能不同
+            # 发送正常的回复通知
+            description = '用户 {user} 在你发表的帖子 {post} 中回复了你：{comment}' \
+                .format(user=self.request.user.username, post=self.content_object.title,
+                        comment=form.instance.body[:50])
             notify.send(self.request.user, recipient=self.content_object.author,
                         actor=self.request.user,
                         verb='回复',

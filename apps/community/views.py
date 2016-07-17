@@ -13,7 +13,6 @@ from apps.usera.models import CommunityUser
 class PostCreateView(LoginRequiredMixin, CreateView):
     template_name = 'community/post_create.html'
     form_class = PostForm
-    success_url = '/'
 
     def get_login_url(self):
         # 复写此 url 获取到登录页面
@@ -49,10 +48,14 @@ class PostDetailView(DetailView):
         return obj
 
 
-class UserFollowsListView(ListView):
+class UserFollowsListView(LoginRequiredMixin, ListView):
     model = Post
     template_name = 'community/index.html'
     context_object_name = 'post_list'
+
+    def get_login_url(self):
+        # 复写此 url 获取到登录页面
+        return reverse('usera:sign_in')
 
     def get_queryset(self):
         print(self.request.user)
@@ -85,6 +88,7 @@ def profile(request):
                   {'profile': request.user.profile, 'post_list': request.user.post_set.all()})
 
 
+# only for test some new feature in development
 def test(request):
     user_instance = CommunityUser.objects.get(username='yangxueguang123456')
     print(user_instance.profile.mugshot.url)
