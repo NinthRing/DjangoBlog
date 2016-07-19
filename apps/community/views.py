@@ -35,6 +35,12 @@ class IndexView(ListView):
             post.body = markdown2.markdown(post.body, extras=['fenced-code-blocks'], )
         return post_list
 
+    def get_context_data(self, **kwargs):
+        context = super(IndexView, self).get_context_data(**kwargs)
+        if self.request.user.is_authenticated():
+            context['notification_list'] = self.request.user.notifications.all().order_by('-created_time')[:5]
+        return context
+
 
 class PostDetailView(DetailView):
     model = Post

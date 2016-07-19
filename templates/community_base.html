@@ -40,6 +40,24 @@
             </form>
             <ul class="nav navbar-nav navbar-right">
                 {% if user.is_authenticated %}
+
+                    <!-- notication -->
+                    <!-- 修改意见：
+                    1. 显示到最顶层，不被标签覆盖。2. 铃铛和后面你的数组可否对齐？ 3. 列表项中的文字可否左对其？ 4. 可否在每个列表项文字前加一个小红点样式？以表示未读
+                    5. 在底部加一个全部标为已读和查看全部消息的按钮
+                    -->
+                    <li>
+                        <a href="#"><span class="glyphicon glyphicon-bell"></span><span class="badge">3</span></a>
+                        <ul id="noti-drop" class="list-group">
+                            {% for notificaiton in notification_list %}
+                                <li class="list-group-item"><a href="#">{{ notificaiton.description|safe }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                    <!-- User pic -->
+                    <li><img src="{{ user.profile.mugshot.url }}" class="dj-list-userpic"></li>
+
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                            aria-expanded="false">{{ user.profile.nickname }}<span class="caret"></span></a>
