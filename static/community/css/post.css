@@ -181,16 +181,17 @@ a:hover {
     background: #fff;
     position: absolute;
     left: -9999px;
+    z-index: 99;
+    width: 300px;
 }
 
 .nav #noti-drop li {
     float: none;
     width: 100%;
-    text-align: center;
 }
 
 .nav li:hover #noti-drop {
-    left: 0;
+    left: -100px;
 }
 
 .nav #noti-drop a {
@@ -201,6 +202,15 @@ a:hover {
 .nav li:hover #noti-drop li:hover {
     background: #eee;
     cursor: pointer;
+}
+
+.footer-btn {
+    width: 300px;
+}
+
+.icon-unread {
+    color: red;
+    padding-left: 5px;
 }
 
 footer {
